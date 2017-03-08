@@ -1,0 +1,7 @@
+#Wed Mar 08 16:11:57 CET 2017
+base.0=/home/pado/Desktop/android-Camera2Video/Application/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_54e726e9fb10fea790b3ebfe4d6e646c14e564c1
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/home/pado/Desktop/android-Camera2Video/Application/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_08dc2f11469893a61f4e3b4915802796131bfe3e/classes.dex
+base.1=/home/pado/Desktop/android-Camera2Video/Application/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_08dc2f11469893a61f4e3b4915802796131bfe3e
+file.0=/home/pado/Desktop/android-Camera2Video/Application/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_54e726e9fb10fea790b3ebfe4d6e646c14e564c1/classes.dex
