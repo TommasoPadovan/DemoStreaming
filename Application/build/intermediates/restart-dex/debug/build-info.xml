@@ -5,32 +5,32 @@
     density="xxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="7293907773588"
-    token="-6030202276267966223"
+    timestamp="4288886857036"
+    token="2411679826630604757"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="1315" />
+        duration="1373" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="223" />
+        duration="178" />
     <task
         name="verifier"
         duration="10" />
 
     <artifact
-        location="/home/pado/Desktop/android-Camera2Video/Application/build/outputs/apk/Application-debug.apk"
+        location="/home/paolo/repos/DemoStreaming/Application/build/outputs/apk/Application-debug.apk"
         type="MAIN" />
 
     <build
-        timestamp="7293907773588"
+        timestamp="4288886857036"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="/home/pado/Desktop/android-Camera2Video/Application/build/outputs/apk/Application-debug.apk"
+            location="/home/paolo/repos/DemoStreaming/Application/build/outputs/apk/Application-debug.apk"
             type="MAIN" />
     </build>
 

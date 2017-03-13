@@ -1,10 +1,10 @@
 [
     {
-        "merged": "/home/pado/Desktop/android-Camera2Video/Application/build/intermediates/res/merged/debug/drawable-xhdpi/ic_launcher.png",
-        "source": "/home/pado/Desktop/android-Camera2Video/Application/src/main/res/drawable-xhdpi/ic_launcher.png"
+        "merged": "/home/paolo/repos/DemoStreaming/Application/build/intermediates/res/merged/debug/drawable-xhdpi/ic_launcher.png",
+        "source": "/home/paolo/repos/DemoStreaming/Application/src/main/res/drawable-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "/home/pado/Desktop/android-Camera2Video/Application/build/intermediates/res/merged/debug/drawable-xhdpi/ic_action_info.png",
-        "source": "/home/pado/Desktop/android-Camera2Video/Application/src/main/res/drawable-xhdpi/ic_action_info.png"
+        "merged": "/home/paolo/repos/DemoStreaming/Application/build/intermediates/res/merged/debug/drawable-xhdpi/ic_action_info.png",
+        "source": "/home/paolo/repos/DemoStreaming/Application/src/main/res/drawable-xhdpi/ic_action_info.png"
     }
 ]

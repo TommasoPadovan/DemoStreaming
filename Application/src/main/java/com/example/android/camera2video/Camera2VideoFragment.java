@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -40,6 +41,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.ImageWriter;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,6 +59,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
@@ -643,11 +646,11 @@ public class Camera2VideoFragment extends Fragment
             Surface previewSurface = new Surface(texture);
             surfaces.add(previewSurface);
             mPreviewBuilder.addTarget(previewSurface);
-
+/*
             // Set up Surface for the MediaRecorder
             mRecorderSurface = mMediaRecorder.getSurface();
             surfaces.add(mRecorderSurface);
-            mPreviewBuilder.addTarget(mRecorderSurface);
+            mPreviewBuilder.addTarget(mRecorderSurface);*/
 
             // MIO
             Surface readerSurface = mImageReader.getSurface();
@@ -801,9 +804,13 @@ public class Camera2VideoFragment extends Fragment
         protected Void doInBackground(Void... params) {
             try {
                 serverSocket = new ServerSocket(8181);
-                while (true) {
+                while (socket == null) {
                     socket = serverSocket.accept();
                 }
+                serverSocket.close();
+                outS = socket.getOutputStream();
+                outS.write(HTTP_HEADER.getBytes());
+                outS.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -811,8 +818,22 @@ public class Camera2VideoFragment extends Fragment
         }
     }
 
+    private static final String BOUNDARY = "--gc0p4Jq0M2Yt08jU534c0p--";
+    private static final String BOUNDARY_LINES = "\r\n" + BOUNDARY + "\r\n";
 
-    boolean done = false;
+    private static final String HTTP_HEADER =
+            "HTTP/1.0 200 OK\r\n"
+                    + "Server: MyServer\r\n"
+                    + "Connection: close\r\n"
+                    + "Max-Age: 0\r\n"
+                    + "Expires: 0\r\n"
+                    + "Cache-Control: no-store, no-cache, must-revalidate, pre-check=0, "
+                    + "post-check=0, max-age=0\r\n"
+                    + "Pragma: no-cache\r\n"
+                    + "Access-Control-Allow-Origin:*\r\n"
+                    + "Content-Type: multipart/x-mixed-replace; "
+                    + "boundary=" + BOUNDARY + "\r\n"
+                    + BOUNDARY_LINES;
 
     private void setUpReader(){
         mImageReader = ImageReader.newInstance(mVideoSize.getWidth(),mVideoSize.getHeight(), ImageFormat.JPEG,30);
@@ -822,78 +843,42 @@ public class Camera2VideoFragment extends Fragment
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
-                Log.d(TAG,"IMMAGINEPRONTA");
                 Image image = reader.acquireLatestImage();
 
-                if(!done) {
-                    done = true;
 
-                    Image.Plane[] planes = image.getPlanes();
+                if(image != null) {
+                    if(outS != null) {
+                        Image.Plane[] planes = image.getPlanes();
 
-
-                    try {
-                        inS = socket.getInputStream();
-                        outS = socket.getOutputStream();
-
-                        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outS));
-
-                        Log.d(TAG, "Writing");
+                        byte[] b = new byte[planes[0].getBuffer().remaining()];
+                        planes[0].getBuffer().get(b);
 
 
-                        bw.write("HTTP/1.0 200 OK\r\n");
-                        bw.write("Content-Length: 3012\r\n");
-                        bw.write("Content-Type: text/html\r\n");
-                        bw.write("\r\n");
+                        try {
 
-                        bw.write("<body>");
-                        bw.write("<h1>CULO</h1>");
-                        bw.write("</body>");
+                            Log.d(TAG, "Writing");
 
-                        /*
-                        for (Image.Plane plane : image.getPlanes()) {
-                            byte[] b = new byte[plane.getBuffer().remaining()];
-                            plane.getBuffer().get(b);
 
-                            bw.write(b.toString());
-                        }*/
+                            outS.write(
+                                    ("Content-type: image/jpeg\r\n"
+                                            + "Content-Length: " + b.length + "\r\n"
+                                            + "X-Timestamp:" + image.getTimestamp() + "\r\n"
+                                            + "\r\n").getBytes()
+                            );
+                            outS.write(b);
+                            outS.write(BOUNDARY_LINES.getBytes());
+                            outS.flush();
 
-                        //bw.write(entire);
-
-                        bw.flush();
-
-                        bw.close();
-                       // outS.close();
-                       // socket.close();
-
-                    } catch (IOException ioe){
-                        ioe.printStackTrace();
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
                     }
-                    Log.d(TAG, "END Writing");
-                    done = true;
-                }
-                if(image !=null)
                     image.close();
+                }
             }
         },new Handler());
     }
 
-    private class SendTask extends AsyncTask<Image, Void, Void> {
-        protected Void doInBackground(Image... images) {
-
-            Image.Plane[] planes = images[0].getPlanes();
-            for (Image.Plane plane : planes) {
-
-                byte[] b = new byte[plane.getBuffer().remaining()];
-                plane.getBuffer().get(b);
-
-
-
-            }
-
-            return null;
-        }
-
-    }
 
 }
 
